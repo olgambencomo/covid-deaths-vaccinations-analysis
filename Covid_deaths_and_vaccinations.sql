@@ -73,12 +73,17 @@ FROM pop_vs_vac;
 
 -- 9. Health risk index by country (normalized factors 0-1)
 WITH covid_risk_data AS (
-    SELECT d.location, d.date, d.total_deaths_per_million, 
-           v.male_smokers, v.female_smokers, v.diabetes_prevalence, v.cardiovasc_death_rate
+    SELECT 
+        d.location, 
+        d.date, 
+        d.total_deaths_per_million, 
+        v.male_smokers, 
+        v.female_smokers, 
+        v.diabetes_prevalence, 
+        v.cardiovasc_death_rate
     FROM covid_deaths AS d
     JOIN covid_vaccinations AS v
-      ON d.location = v.location
-     AND d.date = v.date
+      ON d.location = v.location AND d.date = v.date
     WHERE d.continent IS NOT NULL
       AND v.male_smokers IS NOT NULL
       AND v.female_smokers IS NOT NULL
@@ -86,43 +91,76 @@ WITH covid_risk_data AS (
       AND v.cardiovasc_death_rate IS NOT NULL
       AND d.total_deaths_per_million IS NOT NULL
 ),
+
+
 latest_risk_data AS (
-    SELECT location, MAX(date) AS latest_date
+    SELECT 
+        location, 
+        MAX(date) AS latest_date
     FROM covid_risk_data
     GROUP BY location
 ),
+
+
 normalized_data AS (
-    SELECT d.*,
-           (d.male_smokers - MIN(d.male_smokers) OVER()) /
-           NULLIF(MAX(d.male_smokers) OVER() - MIN(d.male_smokers) OVER(),0) AS male_smokers_norm,
-           
-           (d.female_smokers - MIN(d.female_smokers) OVER()) /
-           NULLIF(MAX(d.female_smokers) OVER() - MIN(d.female_smokers) OVER(),0) AS female_smokers_norm,
-           
-           (d.diabetes_prevalence - MIN(d.diabetes_prevalence) OVER()) /
-           NULLIF(MAX(d.diabetes_prevalence) OVER() - MIN(d.diabetes_prevalence) OVER(),0) AS diabetes_norm,
-           
-           (d.cardiovasc_death_rate - MIN(d.cardiovasc_death_rate) OVER()) /
-           NULLIF(MAX(d.cardiovasc_death_rate) OVER() - MIN(d.cardiovasc_death_rate) OVER(),0) AS cardio_norm
+    SELECT 
+        d.*,
+        
+        (d.male_smokers - MIN(d.male_smokers) OVER()) /
+        NULLIF(MAX(d.male_smokers) OVER() - MIN(d.male_smokers) OVER(), 0)
+        AS male_smokers_norm,
+        
+        (d.female_smokers - MIN(d.female_smokers) OVER()) /
+        NULLIF(MAX(d.female_smokers) OVER() - MIN(d.female_smokers) OVER(), 0)
+        AS female_smokers_norm,
+        
+        (d.diabetes_prevalence - MIN(d.diabetes_prevalence) OVER()) /
+        NULLIF(MAX(d.diabetes_prevalence) OVER() - MIN(d.diabetes_prevalence) OVER(), 0)
+        AS diabetes_norm,
+        
+        (d.cardiovasc_death_rate - MIN(d.cardiovasc_death_rate) OVER()) /
+        NULLIF(MAX(d.cardiovasc_death_rate) OVER() - MIN(d.cardiovasc_death_rate) OVER(), 0)
+        AS cardio_norm
+        
     FROM covid_risk_data d
-)
-SELECT n.location, l.latest_date,
-       n.male_smokers AS male_smokers_percent,
-       n.female_smokers AS female_smokers_percent,
-       n.diabetes_prevalence AS diabetes_prevalence_percent,
-       n.cardiovasc_death_rate AS cardiovasc_death_rate_percent,
-       n.total_deaths_per_million,
-       ROUND(
-           (n.male_smokers_norm +
+),
+
+
+final_risk_data AS (
+    SELECT 
+        n.location,
+        l.latest_date,
+        n.male_smokers AS male_smokers_percent,
+        n.female_smokers AS female_smokers_percent,
+        n.diabetes_prevalence AS diabetes_prevalence_percent,
+        n.cardiovasc_death_rate AS cardiovasc_death_rate_percent,
+        n.total_deaths_per_million,
+        
+        ROUND((
+            n.male_smokers_norm +
             n.female_smokers_norm +
             n.diabetes_norm +
-            n.cardio_norm)/4, 3
-       ) AS health_risk_index
-FROM normalized_data n
-JOIN latest_risk_data l
-  ON n.location = l.location AND n.date = l.latest_date
-ORDER BY health_risk_index DESC;
+            n.cardio_norm
+        ) / 4, 3) AS health_risk_index
+        
+    FROM normalized_data n
+    JOIN latest_risk_data l
+      ON n.location = l.location AND n.date = l.latest_date
+)
 
+
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY health_risk_index DESC) AS risk_rank,
+    location,
+    latest_date,
+    male_smokers_percent,
+    female_smokers_percent,
+    diabetes_prevalence_percent,
+    cardiovasc_death_rate_percent,
+    total_deaths_per_million,
+    health_risk_index
+FROM final_risk_data
+ORDER BY risk_rank;
 
 
 -- 10. Vaccination coverage speed: days to reach 50% fully vaccinated
