@@ -61,13 +61,12 @@ The analysis aims to answer:
 - Joins between multiple datasets  
 - Null handling & filtering  
 - Calculated metrics and KPIs  
-- Normalization with Min–Max scaling  
+
 
 ### 🔍 Analytical Skills
 - Exploratory Data Analysis (EDA)  
 - Comparative country analysis  
 - Population-based metrics  
-- Risk factor modeling  
 - Trend and progress evaluation  
 
 ---
