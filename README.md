@@ -56,8 +56,8 @@ The analysis aims to answer:
 
 ### 🧩 SQL Techniques
 - Common Table Expressions (CTEs)  
-- Window Functions (`OVER`, `PARTITION BY`, `ROW_NUMBER`)  
-- Aggregations & Ranking  
+- Window Functions (`OVER`, `PARTITION BY`)  
+- Aggregations  
 - Joins between multiple datasets  
 - Null handling & filtering  
 - Calculated metrics and KPIs  
