@@ -1,4 +1,4 @@
-# 🦠 COVID-19 Data Exploration using SQL  
+#  COVID-19 Data Exploration using SQL  
 ### Exploratory Data Analysis (EDA) of global Covid-19 data using SQL, window functions, CTEs, joins and normalized indicators.
 
 ---
@@ -13,25 +13,24 @@
 
 ---
 
-## 📚 **Table of Contents**
+## Table of Contents
 - [📘 About the Project](#-about-the-project)  
 - [📁 Dataset](#-dataset)  
 - [🎯 Objectives](#-objectives)  
 - [🛠️ Skills & Concepts Applied](#️-skills--concepts-applied)  
 - [📑 SQL Queries Overview](#-sql-queries-overview)  
-- [📊 Possible Visualizations](#-possible-visualizations)  
-- [🚀 Future Improvements](#-future-improvements)
+
 
 ---
 
-## 📘 **About the Project**
+##  About the Project
 This project explores global Covid-19 data using SQL to understand infection patterns, mortality rates, vaccination progress, and health risk factors across countries.  
 It demonstrates analytical SQL skills through real-world style questions and advanced transformations.
 
 ---
 
-## 📁 **Dataset**
-The data comes from **Our World in Data (OWID)**, which includes:
+## Dataset
+The data comes from Our World in Data (OWID), which includes:
 
 | Table | Description |
 |-------|-------------|
@@ -40,7 +39,7 @@ The data comes from **Our World in Data (OWID)**, which includes:
 
 ---
 
-## 🎯 **Objectives**
+## Objectives
 The analysis aims to answer:
 
 - What % of the population was infected in each country?  
@@ -52,9 +51,9 @@ The analysis aims to answer:
 
 ---
 
-## 🛠️ Skills & Concepts Applied
+##  Skills & Concepts Applied
 
-### 🧩 SQL Techniques
+###  SQL Techniques
 - Common Table Expressions (CTEs)  
 - Window Functions (`OVER`, `PARTITION BY`)  
 - Aggregations  
@@ -63,7 +62,7 @@ The analysis aims to answer:
 - Calculated metrics and KPIs  
 
 
-### 🔍 Analytical Skills
+###  Analytical Skills
 - Exploratory Data Analysis (EDA)  
 - Comparative country analysis  
 - Population-based metrics  
