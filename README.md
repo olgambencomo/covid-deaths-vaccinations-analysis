@@ -15,7 +15,6 @@
 - [🎯 Objectives](#-objectives)
 - [🛠️ Skills & Concepts Applied](#-skills-concepts-applied)
 - [📑 SQL Queries Overview](#-sql-queries-overview)
-- [👤 Author](#-author)
 
 ---
 
@@ -133,8 +132,3 @@ CTE 4: first_vaccination_day  → finds the first day vaccinations started
 Final: JOIN both CTEs to calculate days elapsed
 ```
 
----
-
-## 👤 Author
-
-**olgambencomo** — [github.com/olgambencomo](https://github.com/olgambencomo)
